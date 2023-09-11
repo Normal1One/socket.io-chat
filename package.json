@@ -12,7 +12,8 @@
 		"format": "prettier --write .",
 		"lint": "eslint .",
 		"build": "turbo run build --parallel",
-		"dev": "turbo run dev --parallel"
+		"dev": "turbo run dev --parallel",
+		"test": "turbo run test --parallel"
 	},
 	"license": "MIT",
 	"devDependencies": {
