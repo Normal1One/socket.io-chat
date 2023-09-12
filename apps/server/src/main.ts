@@ -1,14 +1,19 @@
 import { Server } from 'socket.io'
 
-const io = new Server()
+const io = new Server({
+	cors: {
+		origin: `http://localhost:${process.env.CLIENT_PORT || 3001}`
+	}
+})
 
 io.on('connection', (socket) => {
 	console.log(socket.id)
 	socket.on('message', (message) => {
-		socket.emit(`Received message: ${message}`)
+		console.log('New message: ', message)
+		socket.broadcast.emit('message', message)
 	})
-	socket.on('disconnect', () => {
-		console.log(`User disconnected ${socket.id}`)
+	socket.on('disconnect', (reason) => {
+		console.log(`User disconnected: ${reason}`)
 	})
 })
 

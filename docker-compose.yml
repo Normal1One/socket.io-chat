@@ -1,10 +1,23 @@
 version: '3.8'
 
 services:
-    backend:
+    server:
         build:
-            dockerfile: Dockerfile
-            context: ./backend
-        volumes:
-            - /app/node_modules
-            - ./backend:/app
+            dockerfile: ./apps/server/Dockerfile
+            context: .
+            args:
+                - TURBO_TEAM=${TURBO_TEAM}
+                - TURBO_TOKEN=${TURBO_TOKEN}
+        restart: always
+        ports:
+            - ${SERVER_PORT}:${SERVER_PORT}
+    client:
+        build:
+            dockerfile: ./apps/client/Dockerfile
+            context: .
+            args:
+                - TURBO_TEAM=${TURBO_TEAM}
+                - TURBO_TOKEN=${TURBO_TOKEN}
+        restart: always
+        ports:
+            - ${CLIENT_PORT}:${CLIENT_PORT}

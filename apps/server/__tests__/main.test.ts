@@ -1,12 +1,14 @@
 import { createServer } from 'http'
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 import Client from 'socket.io-client'
 import { describe, beforeAll, afterAll, test, expect } from '@jest/globals'
 
-const port = process.env.PORT | 3000
+const port = process.env.SERVER_PORT || 3000
 
 describe('socket.io-project', () => {
-	let io, serverSocket, clientSocket
+	let io: Server,
+		serverSocket: Socket,
+		clientSocket: ReturnType<typeof Client>
 
 	beforeAll((done) => {
 		const httpServer = createServer()
@@ -25,7 +27,7 @@ describe('socket.io-project', () => {
 		clientSocket.close()
 	})
 
-	test('should work', (done) => {
+	test('Basic emit', (done) => {
 		clientSocket.on('hello', (arg) => {
 			expect(arg).toBe('world')
 			done()
@@ -33,11 +35,11 @@ describe('socket.io-project', () => {
 		serverSocket.emit('hello', 'world')
 	})
 
-	test('should work (with ack)', (done) => {
+	test('Basic emit (with ack)', (done) => {
 		serverSocket.on('hi', (cb) => {
 			cb('hola')
 		})
-		clientSocket.emit('hi', (arg) => {
+		clientSocket.emit('hi', (arg: string) => {
 			expect(arg).toBe('hola')
 			done()
 		})

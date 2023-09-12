@@ -5,7 +5,7 @@ RUN corepack enable
 RUN pnpm -g add turbo
 WORKDIR /app
 COPY . .
-RUN pnpm turbo prune --scope="server" --docker
+RUN pnpm turbo prune --scope="client" --docker
 
 FROM base AS installer
 COPY --from=base /app/out/json/ .
@@ -20,7 +20,7 @@ ENV TURBO_TEAM=$TURBO_TEAM
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN turbo build --filter=server...
+RUN turbo build --filter=client...
 
 FROM base AS runner
 WORKDIR /app
@@ -30,4 +30,4 @@ RUN adduser --system --uid 1001 nodejs
 USER nodejs
 COPY --from=installer /app .
 
-CMD node apps/server/dist/main.js
+CMD pnpm run dev
