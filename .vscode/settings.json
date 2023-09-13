@@ -1,7 +1,4 @@
 {
 	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"[dockerfile]": {
-		"editor.defaultFormatter": "foxundermoon.shell-format"
-	}
+	"editor.defaultFormatter": "esbenp.prettier-vscode"
 }

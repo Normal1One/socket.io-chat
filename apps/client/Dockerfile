@@ -17,6 +17,7 @@ COPY turbo.json turbo.json
 
 ARG TURBO_TEAM
 ENV TURBO_TEAM=$TURBO_TEAM
+
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
@@ -26,8 +27,14 @@ FROM base AS runner
 WORKDIR /app
 
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nodejs
-USER nodejs
-COPY --from=installer /app .
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
 
-CMD pnpm run dev
+COPY --from=installer /app/apps/client/next.config.js .
+COPY --from=installer /app/apps/client/package.json .
+
+COPY --from=installer --chown=nextjs:nodejs /app/apps/client/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/client/.next/static ./apps/client/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/client/public ./apps/client/public
+
+CMD node apps/client/server.js

@@ -1,4 +1,4 @@
-import { socket } from '../socket'
+import { socket } from '../utils/socket'
 
 const ConnectionManager = () => {
 	const connect = () => {

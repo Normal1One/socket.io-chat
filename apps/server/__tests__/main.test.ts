@@ -3,8 +3,6 @@ import { Server, Socket } from 'socket.io'
 import Client from 'socket.io-client'
 import { describe, beforeAll, afterAll, test, expect } from '@jest/globals'
 
-const port = process.env.SERVER_PORT || 3000
-
 describe('socket.io-project', () => {
 	let io: Server,
 		serverSocket: Socket,
@@ -13,8 +11,8 @@ describe('socket.io-project', () => {
 	beforeAll((done) => {
 		const httpServer = createServer()
 		io = new Server(httpServer)
-		httpServer.listen(port, () => {
-			clientSocket = Client(`http://localhost:${port}`)
+		httpServer.listen(3000, () => {
+			clientSocket = Client('http://localhost:3000')
 			io.on('connection', (socket) => {
 				serverSocket = socket
 			})

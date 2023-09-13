@@ -1,28 +1,31 @@
 {
 	"name": "client",
+	"version": "0.1.0",
 	"private": true,
-	"version": "0.0.0",
-	"type": "module",
 	"scripts": {
-		"dev": "vite",
-		"build": "vite build",
-		"lint": "tsc",
-		"preview": "vite preview"
-	},
-	"dependencies": {
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"socket.io-client": "^4.7.2"
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
 	},
 	"devDependencies": {
-		"@types/node": "^20.6.0",
-		"@types/react": "^18.2.15",
-		"@types/react-dom": "^18.2.7",
-		"@vitejs/plugin-react": "^4.0.3",
-		"eslint": "^8.45.0",
+		"@types/node": "20.6.0",
+		"@types/react": "18.2.21",
+		"@types/react-dom": "18.2.7",
+		"autoprefixer": "10.4.15",
+		"bufferutil": "^4.0.7",
+		"eslint": "8.49.0",
 		"eslint-config-custom": "workspace:*",
+		"postcss": "8.4.29",
+		"tailwindcss": "3.3.3",
 		"tsconfig": "workspace:*",
 		"typescript": "^5.0.2",
-		"vite": "^4.4.5"
+		"utf-8-validate": "^6.0.3"
+	},
+	"dependencies": {
+		"next": "13.4.19",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
+		"socket.io-client": "^4.7.2"
 	}
 }

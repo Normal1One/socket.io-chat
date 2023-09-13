@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react'
-import { socket } from './socket'
-import ConnectionState from './components/ConnectionState'
-import ConnectionManager from './components/ConnectionManager'
-import Form from './components/Form'
-import Events from './components/Events'
+'use client'
 
-const App = () => {
+import { useEffect, useState } from 'react'
+import ConnectionManager from '../components/ConnectionManager'
+import ConnectionState from '../components/ConnectionState'
+import Events from '../components/Events'
+import Form from '../components/Form'
+import { socket } from '../utils/socket'
+
+const Home = () => {
 	const [isConnected, setIsConnected] = useState(socket.connected)
 	const [messages, setMessages] = useState<string[]>([])
 
@@ -43,4 +45,4 @@ const App = () => {
 	)
 }
 
-export default App
+export default Home

@@ -9,8 +9,12 @@ services:
                 - TURBO_TEAM=${TURBO_TEAM}
                 - TURBO_TOKEN=${TURBO_TOKEN}
         restart: always
+        env_file:
+            - ./.env
         ports:
-            - ${SERVER_PORT}:${SERVER_PORT}
+            - 3001:3001
+        networks:
+            - app_network
     client:
         build:
             dockerfile: ./apps/client/Dockerfile
@@ -19,5 +23,13 @@ services:
                 - TURBO_TEAM=${TURBO_TEAM}
                 - TURBO_TOKEN=${TURBO_TOKEN}
         restart: always
+        env_file:
+            - ./.env
         ports:
-            - ${CLIENT_PORT}:${CLIENT_PORT}
+            - 3000:3000
+        networks:
+            - app_network
+
+networks:
+    app_network:
+        external: true
