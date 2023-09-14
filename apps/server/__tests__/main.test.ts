@@ -11,8 +11,8 @@ describe('socket.io-project', () => {
 	beforeAll((done) => {
 		const httpServer = createServer()
 		io = new Server(httpServer)
-		httpServer.listen(3000, () => {
-			clientSocket = Client('http://localhost:3000')
+		httpServer.listen(3001, () => {
+			clientSocket = Client('http://localhost:3001')
 			io.on('connection', (socket) => {
 				serverSocket = socket
 			})
