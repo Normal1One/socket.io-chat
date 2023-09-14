@@ -1,0 +1,25 @@
+name: 'Sync with GitLab'
+
+on:
+  push:
+    branches:
+      - main
+  delete:
+    branches:
+     - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Sync
+      uses: wangchucheng/git-repo-sync@v0.1.0
+      with:
+        target-url: https://gitlab.com/mygroup2694936/socket.io-project.git
+        target-username: Normal1One
+        target-token: ${GITLAB_TOKEN}
