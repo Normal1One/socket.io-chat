@@ -1,19 +1,27 @@
 image: node:latest
 stages:
+    - install
     - build
-build:
-    stage: build
-    before_script:
-        - corepack enable
-        - corepack prepare pnpm@latest-8 --activate
-        - pnpm config set store-dir .pnpm-store
-    script:
-        - pnpm install
-        - pnpm build
-        - pnpm test
+    - test
+install:
+    stage: install
     cache:
         key:
             files:
-                - pnpm-lock.yaml
+                - yarn.lock
         paths:
-            - .pnpm-store
+            - node_modules
+    before_script:
+        - yarn config set cache-folder node_modules
+    script:
+        - yarn install
+
+build:
+    stage: build
+    script:
+        - yarn build
+
+test:
+    stage: test
+    script:
+        - yarn test

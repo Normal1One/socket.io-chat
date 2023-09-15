@@ -1,16 +1,13 @@
 FROM node:20-slim AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-RUN pnpm -g add turbo
+RUN yarn global add turbo
 WORKDIR /app
 COPY . .
-RUN pnpm turbo prune --scope="client" --docker
+RUN turbo prune --scope="client" --docker
 
 FROM base AS installer
 COPY --from=base /app/out/json/ .
-COPY --from=base /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm i
+COPY --from=base /app/out/yarn.lock ./yarn.lock
+RUN yarn install
 
 COPY --from=base /app/out/full/ .
 COPY turbo.json turbo.json

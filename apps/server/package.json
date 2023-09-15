@@ -9,18 +9,19 @@
 		"test": "jest"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.22.19",
 		"@babel/preset-env": "^7.22.15",
 		"@babel/preset-typescript": "^7.22.15",
 		"@jest/globals": "^29.6.4",
 		"@types/jest": "^29.5.4",
 		"dotenv": "^16.3.1",
 		"eslint": "^8.49.0",
-		"eslint-config-custom-server": "workspace:*",
+		"eslint-config-custom-server": "*",
 		"jest": "^29.6.4",
 		"nodemon": "^3.0.1",
 		"ts-loader": "^9.4.4",
 		"ts-node": "^10.9.1",
-		"tsconfig": "workspace:*",
+		"tsconfig": "*",
 		"typescript": "^5.0.2",
 		"webpack": "^5.88.2",
 		"webpack-cli": "^5.1.4"

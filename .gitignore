@@ -5,4 +5,5 @@ out
 .turbo
 .next
 .env
+yarn-error.log
 next-env.d.ts
