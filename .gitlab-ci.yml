@@ -1,9 +1,11 @@
 image: node:latest
+
 stages:
     - install
     - build
     - test
-install:
+
+Install:
     stage: install
     cache:
         key:
@@ -11,17 +13,29 @@ install:
                 - yarn.lock
         paths:
             - node_modules
-    before_script:
-        - yarn config set cache-folder node_modules
     script:
-        - yarn install
+        - yarn install --cache-folder node_modules
 
-build:
-    stage: build
-    script:
-        - yarn build
-
-test:
+Test:
     stage: test
+    cache:
+        key:
+            files:
+                - yarn.lock
+        paths:
+            - node_modules
+        policy: pull
     script:
         - yarn test
+
+Build:
+    stage: build
+    cache:
+        key:
+            files:
+                - yarn.lock
+        paths:
+            - node_modules
+        policy: pull
+    script:
+        - yarn build
