@@ -1,41 +1,15 @@
-image: node:latest
+image: oven/bun:latest
 
 stages:
     - install
     - build
-    - test
 
 Install:
     stage: install
-    cache:
-        key:
-            files:
-                - yarn.lock
-        paths:
-            - node_modules
     script:
-        - yarn install --cache-folder node_modules
-
-Test:
-    stage: test
-    cache:
-        key:
-            files:
-                - yarn.lock
-        paths:
-            - node_modules
-        policy: pull
-    script:
-        - yarn test
+        - bun install
 
 Build:
     stage: build
-    cache:
-        key:
-            files:
-                - yarn.lock
-        paths:
-            - node_modules
-        policy: pull
     script:
-        - yarn build
+        - bun run build

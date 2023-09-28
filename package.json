@@ -13,7 +13,7 @@
 		"lint": "eslint .",
 		"build": "turbo run build --parallel",
 		"dev": "turbo run dev --parallel",
-		"test": "turbo run test --parallel"
+        "start": "turbo run start --parallel"
 	},
 	"license": "MIT",
 	"devDependencies": {

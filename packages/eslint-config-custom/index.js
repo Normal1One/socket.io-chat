@@ -1,11 +1,18 @@
+// eslint-disable-next-line no-undef
 module.exports = {
-	extends: ['next', 'turbo', 'prettier'],
+	env: { browser: true, es2020: true },
+	extends: [
+		'eslint:recommended',
+		'plugin:@typescript-eslint/recommended',
+		'plugin:react-hooks/recommended'
+	],
+	ignorePatterns: ['dist', '.eslintrc.cjs'],
+	parser: '@typescript-eslint/parser',
+	plugins: ['react-refresh'],
 	rules: {
-		'@next/next/no-html-link-for-pages': 'off'
-	},
-	parserOptions: {
-		babelOptions: {
-			presets: [require.resolve('next/babel')]
-		}
+		'react-refresh/only-export-components': [
+			'warn',
+			{ allowConstantExport: true }
+		]
 	}
 }

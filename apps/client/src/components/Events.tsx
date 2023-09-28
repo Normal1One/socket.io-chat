@@ -1,8 +1,6 @@
-import { ReactNode } from 'react'
-
-const Events = ({ events }: { events: ReactNode[] }) => {
+const Events = ({ events }: { events: string[] }) => {
 	return (
-		<ul>
+		<ul className="border border-gray-500 rounded h-80 mb-4">
 			{events.map((event, index) => (
 				<li key={index}>{event}</li>
 			))}

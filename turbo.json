@@ -1,13 +1,14 @@
 {
 	"$schema": "https://turbo.build/schema.json",
+    "globalEnv": ["VITE_SERVER_PORT", "VITE_CLIENT_PORT"],
 	"pipeline": {
 		"build": {
 			"dependsOn": ["^build"],
-			"outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+			"outputs": ["dist/**", "out/**"]
 		},
 		"lint": {},
-		"test": {
-			"outputs": ["coverage/**"]
+		"start": {
+			"dependsOn": ["build", "lint"]
 		},
 		"dev": {
 			"cache": false,
