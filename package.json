@@ -1,21 +1,6 @@
 {
 	"name": "socket.io-project",
 	"version": "0.0.1",
-	"type": "module",
-	"private": true,
-	"workspaces": [
-		"apps/*",
-		"packages/*"
-	],
-	"scripts": {
-		"prepare": "husky install",
-		"format": "prettier --write .",
-		"lint": "eslint .",
-		"build": "turbo run build --parallel",
-		"dev": "turbo run dev --parallel",
-        "start": "turbo run start --parallel"
-	},
-	"license": "MIT",
 	"devDependencies": {
 		"@commitlint/cli": "^17.7.1",
 		"@commitlint/config-conventional": "^17.7.0",
@@ -25,10 +10,24 @@
 		"prettier": "^3.0.3",
 		"turbo": "^1.10.13"
 	},
+	"license": "MIT",
 	"lint-staged": {
 		"**/*.{js,ts,tsx}": [
 			"eslint --fix"
 		],
 		"**/*": "prettier --write --ignore-unknown"
-	}
+	},
+	"private": true,
+	"scripts": {
+		"prepare": "husky install",
+		"format": "prettier --write .",
+		"lint": "eslint .",
+		"build": "turbo run build --parallel",
+		"dev": "turbo run dev --parallel"
+	},
+	"type": "module",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	]
 }

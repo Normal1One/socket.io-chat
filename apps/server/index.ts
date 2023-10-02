@@ -1,24 +1,30 @@
 import { Server } from 'socket.io'
+import { createServer } from 'http'
 import 'dotenv/config'
 
-const server = new Server({
+const PORT = process.env.VITE_SERVER_PORT || 3000
+
+const httpServer = createServer()
+
+const io = new Server(httpServer, {
 	cors: {
-		origin: `http://127.0.0.1:${process.env.VITE_CLIENT_PORT || 3001}`
+		origin: `http://localhost:${process.env.VITE_CLIENT_PORT || 3001}`
 	}
 })
 
-server.on('connection', (socket) => {
-	console.log(socket.id)
+io.on('connection', (socket) => {
 	socket.on('send-message', (message, room) => {
-		if (room === '') {
-			socket.broadcast.emit('receive-message', message)
-		} else {
-			socket.to(room).emit('receive-message', message)
-		}
+		socket.to(room).emit('receive-message', message)
 	})
 	socket.on('join-room', (room) => {
 		socket.join(room)
+		console.log(`User with ID: ${socket.id} joined room: ${room}`)
+	})
+	socket.on('disconnect', () => {
+		console.log(`User with ID: ${socket.id} disconnected`)
 	})
 })
 
-server.listen(process.env.VITE_SERVER_PORT || 3000)
+httpServer.listen(PORT, () => {
+	console.log(`Listening on port: ${PORT}`)
+})
