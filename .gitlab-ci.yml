@@ -1,28 +1,8 @@
-image: oven/bun:latest
-
-stages:
-    - install
-    - build
-    - deploy
-
-Install:
-    stage: install
-    before_script:
-        - apt-get update && apt-get upgrade -y && apt-get install -y git
-    script:
-        - bun install
-
-Build:
-    stage: build
-    script:
-        - bun run build
-
-Deploy:
+deploy:
     image: docker
-    stage: deploy
     services:
         - docker:dind
     script:
         - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN
-        - docker build -t $CI_REGISTRY_IMAGE .
+        - docker build -t $CI_REGISTRY_IMAGE . --build-arg TURBO_TEAM=$TURBO_TEAM --build-arg TURBO_TOKEN=$TURBO_TOKEN
         - docker push $CI_REGISTRY_IMAGE
