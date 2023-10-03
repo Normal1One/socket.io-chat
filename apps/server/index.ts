@@ -13,12 +13,13 @@ const io = new Server(httpServer, {
 })
 
 io.on('connection', (socket) => {
-	socket.on('send-message', (message, room) => {
-		socket.to(room).emit('receive-message', message)
-	})
+	console.log(`User connected: ${socket.id}`)
 	socket.on('join-room', (room) => {
 		socket.join(room)
 		console.log(`User with ID: ${socket.id} joined room: ${room}`)
+	})
+	socket.on('send-message', (data) => {
+		socket.to(data.room).emit('receive-message', data)
 	})
 	socket.on('disconnect', () => {
 		console.log(`User with ID: ${socket.id} disconnected`)

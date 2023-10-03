@@ -6,40 +6,61 @@ interface Props {
 	room: string
 }
 
+interface Message {
+	author: string
+	timestamp: string
+	message: string
+}
+
 const Chat = ({ username, room }: Props) => {
-	const [messages, setMessages] = useState<string[]>([])
-	const [message, setMessage] = useState('')
+	const [messages, setMessages] = useState<Message[]>([])
+	const [currentMessage, setCurrentMessage] = useState('')
 
 	const onMessageSubmit = () => {
-		setMessages((previous) => [...previous, message])
-		socket.emit('send-message', message)
-		setMessage('')
+		if (currentMessage) {
+			const message = {
+				message: currentMessage,
+				author: username,
+				timestamp: new Date().toLocaleString()
+			}
+			socket.emit('send-message', { ...message, room })
+			setMessages((previous) => [...previous, message])
+			setCurrentMessage('')
+		}
 	}
 
 	useEffect(() => {
-		socket.on('receive-message', (message) => {
-			setMessages((previous) => [...previous, message])
-		})
-	}, [])
+		document.title = `Room ${room}`
+		const onRecieveMessage = (data: Message) => {
+			setMessages((previous) => [...previous, data])
+		}
+		socket.on('receive-message', onRecieveMessage)
+		return () => {
+			socket.off('receive-message', onRecieveMessage)
+		}
+	}, [room])
 
 	return (
-		<div className="p-20 pt-10">
+		<div className="p-40 pt-10">
 			<p className="text-2xl text-center font-bold mb-10">
 				{`Room ${room}`}
 			</p>
-			<ul className="border border-gray-500 rounded h-80 p-2 mb-4">
+			<ul className="border border-gray-500 rounded p-4 h-[50vh] overflow-y-scroll mb-4">
 				{messages.map((message, index) => (
 					<li
 						key={index}
-					>{`[${new Date().toLocaleString()}] - [${username}] - ${message}`}</li>
+						className={
+							message.author === username ? 'text-end' : ''
+						}
+					>{`[${message.timestamp}] - [${message.author}] - ${message.message}`}</li>
 				))}
 			</ul>
 			<form className="flex">
 				<input
 					type="text"
-					value={message}
+					value={currentMessage}
 					className="border w-full rounded p-2 border-gray-500"
-					onChange={(e) => setMessage(e.target.value)}
+					onChange={(e) => setCurrentMessage(e.target.value)}
 				/>
 				<button
 					type="button"
