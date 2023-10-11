@@ -4,6 +4,7 @@ import { socket } from './utils/socket'
 interface Props {
 	username: string
 	room: string
+	handleLeave: () => void
 }
 
 interface Message {
@@ -12,7 +13,7 @@ interface Message {
 	message: string
 }
 
-const Chat = ({ username, room }: Props) => {
+const Chat = ({ username, room, handleLeave }: Props) => {
 	const [messages, setMessages] = useState<Message[]>([])
 	const [currentMessage, setCurrentMessage] = useState('')
 
@@ -41,10 +42,19 @@ const Chat = ({ username, room }: Props) => {
 	}, [room])
 
 	return (
-		<div className="p-40 pt-10">
+		<div className="p-40 pt-10 flex flex-col">
 			<p className="text-2xl text-center font-bold mb-10">
 				{`Room ${room}`}
 			</p>
+			<div className="flex items-center mb-4 justify-between">
+				<button
+					type="button"
+					className="rounded border self-end text-white bg-gray-500 p-2 hover:opacity-80"
+					onClick={handleLeave}
+				>
+					Leave room
+				</button>
+			</div>
 			<ul className="border border-gray-500 rounded p-4 h-[50vh] overflow-y-scroll mb-4">
 				{messages.map((message, index) => (
 					<li

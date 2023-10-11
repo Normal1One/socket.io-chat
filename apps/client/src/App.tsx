@@ -1,25 +1,47 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Chat from './Chat'
 import { socket } from './utils/socket'
 
 const App = () => {
 	const [username, setUsername] = useState('')
-	const [showChat, setShowChat] = useState(false)
 	const [room, setRoom] = useState('')
+	const [secretKey, setSecretKey] = useState('')
+	const [showChat, setShowChat] = useState(false)
+	const [saveMessages, setSaveMessages] = useState(true)
 
 	const onJoinRoom = () => {
 		if (room && username) {
-			socket.emit('join-room', room)
+			socket.emit('join-room', {
+				room,
+				username,
+				saveMessages,
+				secretKey
+			})
 			setShowChat(true)
 		}
 	}
+
+	const onLeaveRoom = () => {
+		socket.emit('leave-room', room)
+		setShowChat(false)
+	}
+
+	useEffect(() => {
+		const onRecieveMessage = (data: string) => {
+			console.log(data)
+		}
+		socket.on('join-room', onRecieveMessage)
+		return () => {
+			socket.off('join-room', onRecieveMessage)
+		}
+	}, [])
 
 	return (
 		<>
 			{!showChat ? (
 				<div className="left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2">
 					<p className="text-2xl text-center font-bold mb-4">
-						Join chat
+						Join room
 					</p>
 					<form className="flex flex-col w-80 gap-3 m-auto">
 						<label htmlFor="username">Username</label>
@@ -38,6 +60,24 @@ const App = () => {
 							className="border w-full rounded p-2 border-gray-500"
 							onChange={(e) => setRoom(e.target.value)}
 						/>
+						<label htmlFor="secretKey">Secret key (optional)</label>
+						<input
+							type="password"
+							name="secretKey"
+							value={secretKey}
+							className="border w-full rounded p-2 border-gray-500"
+							onChange={(e) => setSecretKey(e.target.value)}
+						/>
+						<div className="flex">
+							<input
+								type="checkbox"
+								className="mr-5"
+								checked={saveMessages}
+								name="save"
+								onChange={() => setSaveMessages(!saveMessages)}
+							/>
+							<label htmlFor="save">Save messages</label>
+						</div>
 						<button
 							type="button"
 							onClick={onJoinRoom}
@@ -48,7 +88,11 @@ const App = () => {
 					</form>
 				</div>
 			) : (
-				<Chat username={username} room={room} />
+				<Chat
+					username={username}
+					room={room}
+					handleLeave={onLeaveRoom}
+				/>
 			)}
 		</>
 	)

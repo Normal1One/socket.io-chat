@@ -3,7 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"scripts": {
-        "build": "bun build index.ts --outdir ./out --target node",
+		"build": "bun build index.ts --outdir ./out --target node",
 		"dev": "bun --watch run index.ts",
 		"start": "bun run index.ts"
 	},
@@ -16,6 +16,7 @@
 		"typescript": "^5.0.2"
 	},
 	"dependencies": {
+		"redis": "^4.6.10",
 		"socket.io": "^4.7.2",
 		"socket.io-client": "^4.7.2"
 	}
