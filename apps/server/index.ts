@@ -19,30 +19,44 @@ const io = new Server(httpServer, {
 	}
 })
 
+client.connect()
+
 io.on('connection', (socket) => {
 	socket.on('join-room', async (data) => {
-		const rooms = await client.lRange('rooms', 0, -1)
-		const room = rooms.find((elem) => JSON.parse(elem).room === data.room)
-		if (room) {
-			if ('secretKey' in JSON.parse(room)) {
-				if (JSON.parse(room).secretKey === data.secretKey) {
-					socket.join(data.room)
-				} else {
-					console.log('Wrong key!')
-				}
-			} else {
-				socket.join(data.room)
-			}
-		} else {
-			client.rPush('rooms', JSON.stringify(data))
-			socket.join(data.room)
+		const roomNames = await client.sMembers('room-names')
+
+		if (!roomNames.includes(data.room)) {
+			await client.hSet('rooms', data.room, JSON.stringify(data))
+			await client.sAdd('room-names', data.room)
 		}
+
+		const room = (await client.hGet('rooms', data.room)) as string
+
+		if (!('secretKey' in JSON.parse(room))) {
+			socket.join(data.room)
+			return
+		}
+
+		if (JSON.parse(room).secretKey === data.secretKey) {
+			socket.join(data.room)
+		} else {
+			console.log('Wrong key!')
+		}
+
+		io.to(data.room).emit(
+			'connected-users',
+			io.sockets.adapter.rooms.get(data.room)?.size
+		)
 	})
 	socket.on('send-message', (data) => {
 		socket.to(data.room).emit('receive-message', data)
 	})
 	socket.on('leave-room', (room) => {
 		socket.leave(room)
+		io.to(room).emit(
+			'connected-users',
+			io.sockets.adapter.rooms.get(room)?.size
+		)
 	})
 })
 

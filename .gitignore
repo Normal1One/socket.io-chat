@@ -1,8 +1,5 @@
 node_modules
 dist
-coverage
 out
 .turbo
-.next
 .env
-next-env.d.ts

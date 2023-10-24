@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Chat from './Chat'
 import { socket } from './utils/socket'
 
@@ -25,16 +25,6 @@ const App = () => {
 		socket.emit('leave-room', room)
 		setShowChat(false)
 	}
-
-	useEffect(() => {
-		const onRecieveMessage = (data: string) => {
-			console.log(data)
-		}
-		socket.on('join-room', onRecieveMessage)
-		return () => {
-			socket.off('join-room', onRecieveMessage)
-		}
-	}, [])
 
 	return (
 		<>

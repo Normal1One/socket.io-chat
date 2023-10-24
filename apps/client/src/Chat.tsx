@@ -15,7 +15,8 @@ interface Message {
 
 const Chat = ({ username, room, handleLeave }: Props) => {
 	const [messages, setMessages] = useState<Message[]>([])
-	const [currentMessage, setCurrentMessage] = useState('')
+	const [currentMessage, setCurrentMessage] = useState<string>()
+	const [connectedUsers, setConnectedUsers] = useState<string>()
 
 	const onMessageSubmit = () => {
 		if (currentMessage) {
@@ -41,8 +42,18 @@ const Chat = ({ username, room, handleLeave }: Props) => {
 		}
 	}, [room])
 
+	useEffect(() => {
+		const onRecieveMessage = (data: string) => {
+			setConnectedUsers(data)
+		}
+		socket.on('connected-users', onRecieveMessage)
+		return () => {
+			socket.off('connected-users', onRecieveMessage)
+		}
+	}, [])
+
 	return (
-		<div className="p-40 pt-10 flex flex-col">
+		<div className="p-40 pt-10 flex flex-col max-w-7xl m-auto">
 			<p className="text-2xl text-center font-bold mb-10">
 				{`Room ${room}`}
 			</p>
@@ -54,6 +65,9 @@ const Chat = ({ username, room, handleLeave }: Props) => {
 				>
 					Leave room
 				</button>
+				<p className="font-bold text-base">
+					Connected users: {connectedUsers}
+				</p>
 			</div>
 			<ul className="border border-gray-500 rounded p-4 h-[50vh] overflow-y-scroll mb-4">
 				{messages.map((message, index) => (

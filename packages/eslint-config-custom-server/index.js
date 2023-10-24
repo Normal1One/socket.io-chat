@@ -16,9 +16,6 @@ module.exports = {
 			}
 		}
 	],
-	rules: {
-		'@typescript-eslint/no-var-requires': 'off'
-	},
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		ecmaVersion: 'latest',
